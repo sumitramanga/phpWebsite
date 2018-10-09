@@ -1,4 +1,13 @@
 <?php
+
+	// include composer autoload
+	require 'vendor/autoload.php';
+
+	// import the Intervention Image Manager Class
+	use Intervention\Image\ImageManager;
+
+
+
 	// When getting errors about php go to this method. It will show info about
 	// php
 	// phpinfo();
@@ -38,22 +47,42 @@
 			array_push($errors, 'File not found, can only be a jpg or png');
 		}
 
-		// Where the uploaded file will go
-		$destination = 'images/uploads';
 
-		// if this destination doesn't exists make the directory
-		if (! is_dir($destination)) {
-			mkdir('images/uploads/', 0777, true);
+		if (empty($errors)) {
+			// Where the uploaded file will go
+			$destination = 'images/uploads';
+
+			// if this destination doesn't exists make the directory
+			if (! is_dir($destination)) {
+				mkdir('images/uploads/', 0777, true);
+			}
+
+			// This is so we can create a unqiue name for the file
+			$newFileName = uniqid() .'.'. $fileExt;
+			move_uploaded_file($fileTmp, $destination.'/'.$newFileName);
+
+			$manager = new ImageManager();
+
+			$thumbDestination = 'images/uploads/thumbnails';
+
+			if (! is_dir($thumbDestination)) {
+				mkdir('images/uploads/thumbnails/', 0777, true);
+			}
+
+			// calling the make funciton
+			$thumbnailImage = $manager->make($fileTmp);
+
+			$thumbnailImage->resize(300, null, function($constraint){
+				$constraint->aspectRatio();
+				$constraint->upsize();
+			});
+			$thumbnailImage->save($thumbDestination.'/'.$newFileName, 100);
+
 		}
-
-		// This is so we can create a unqiue name for the file
-		$newFileName = uniqid() .'.'. $fileExt;
-		move_uploaded_file($fileTmp, $destination.'/'.$newFileName);
-
 
 		die();
 	} else {
-		array_push($errors, 'File not found, Please upload an image');
+		// array_push($errors, 'File not found, Please upload an image');
 	}
 
 	$page = 'Image Upload';
@@ -63,8 +92,6 @@
 <?php require('templates/header.php') ?>
 	<?php require('templates/main.php') ?>
 
-
-	<!-- If the errors aray is not empty and posted, show the error messages. POST -->
 	<?php if(!empty($errors)): ?>
 		<div class="alert alert-danger" role="alert">
 			<ul>
