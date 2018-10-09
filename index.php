@@ -9,7 +9,10 @@
 	$bgImage = 'homeBgImage';
 
 	/* This is needed in order to run the website at all. A warning and fatel
-	error messages will appear */
+	error messages will appear aka like the die method.
+	Templates are good for reducing time when making fixes to a certain part
+	without going into each file which has consistent code. */
+
 	require('templates/header.php');
 ?>
 

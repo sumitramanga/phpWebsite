@@ -8,11 +8,15 @@
 		// $message = $_POST['message'];
 		// $subscribe = $_POST['subscribe'];
 
-		// automaically creates the variables instead of hard coding them ourselves
+		// automaically creates the variables ($name, $message etc.) instead of
+		// hard coding them ourselves.
 		extract($_POST);
 
 		$errors = array();
 
+		// JS can be deleted via inspector therfore validation can be removed
+		// which is why PHP validation is nesescary (PHP can't be deleted via
+		// inspector)
 		if (!$name) {
 			array_push($errors, 'Name is required. Please enter a value');
 		} else if (strlen($name) < 3) {
@@ -29,12 +33,14 @@
 			array_push($errors, 'This message is too long');
 		}
 
+		// else if in email is made by PHP instead of using regular expression
 		if (!$email) {
 			array_push($errors, 'Please enter an valid email address');
 		} else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 			array_push($errors, 'your email is invalid');
 		}
 
+		// mail is a PHP method.
 		if (empty($errors)) {
 			$to = $email;
 			$subject = 'Email enquiry';
@@ -61,6 +67,8 @@
 	<!--
 	enctype="multipart/form-data" is for when uploading videos/images
 	-->
+
+	<!-- If the errors aray is not empty and posted, show the error messages -->
 	<?php if($_POST && !empty($errors)): ?>
 		<div class="alert alert-danger" role="alert">
 			<ul>
@@ -71,7 +79,8 @@
 		</div>
 	<?php endif; ?>
 
-
+	<!-- Form -->
+	<!-- It is important to have names in our inputs -->
 	<form method="post" action="contact.php" enctype="multipart/form-data">
 	  <div class="form-row">
 	    <div class="form-group col-md-6">
