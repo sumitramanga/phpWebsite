@@ -59,9 +59,13 @@
 
 			// This is so we can create a unqiue name for the file
 			$newFileName = uniqid() .'.'. $fileExt;
-			move_uploaded_file($fileTmp, $destination.'/'.$newFileName);
+			// move_uploaded_file($fileTmp, $destination.'/'.$newFileName);
 
 			$manager = new ImageManager();
+
+			$mainImage = $manager->make($fileTmp);
+			$mainImage->save($destination.'/'.$newFileName, 100);
+
 
 			$thumbDestination = 'images/uploads/thumbnails';
 
@@ -72,17 +76,38 @@
 			// calling the make funciton
 			$thumbnailImage = $manager->make($fileTmp);
 
+			// Using the resize function
 			$thumbnailImage->resize(300, null, function($constraint){
 				$constraint->aspectRatio();
 				$constraint->upsize();
 			});
+
+			// Adds text to image (watermark)
+			$thumbnailImage->text('Hello World', 120, 100);
+
+			// Draws a polygon on the image
+			// define polygon points
+			$points = array(
+			    40,  50,  // Point 1 (x, y)
+			    20,  240, // Point 2 (x, y)
+			    60,  60,  // Point 3 (x, y)
+			    240, 20,  // Point 4 (x, y)
+			    50,  40,  // Point 5 (x, y)
+			    10,  10   // Point 6 (x, y)
+			);
+			$thumbnailImage->polygon($points, function($draw) {
+				$draw->background('#038f80');
+				$draw->border(1, '#38fab3');
+			});
+
+			// Crops image into a circle
+			$thumbnailImage->crop(100, 100, 25, 25);
+
+			$thumbnailImage->opacity(50);
+
 			$thumbnailImage->save($thumbDestination.'/'.$newFileName, 100);
 
 		}
-
-		die();
-	} else {
-		// array_push($errors, 'File not found, Please upload an image');
 	}
 
 	$page = 'Image Upload';
