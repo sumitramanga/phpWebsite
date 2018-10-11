@@ -23,6 +23,7 @@
             <a class="nav-link <?php if($page === 'About'): ?>active <?php endif; ?>" href="about.php">About</a>
             <a class="nav-link <?php if($page === 'Contact'): ?>active <?php endif; ?>" href="contact.php">Contact</a>
 			<a class="nav-link <?php if($page === 'Image Upload'): ?>active <?php endif; ?>" href="imageUpload.php">Image Upload</a>
+			<a class="nav-link <?php if($page === 'Contact Form Task'): ?>active <?php endif; ?>" href="newContactForm.php">Contact Form Task</a>
           </nav>
         </div>
       </header>

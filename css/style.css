@@ -132,3 +132,7 @@ body {
 .contactBgImage {
 	background-image: url('https://images.unsplash.com/photo-1538965420933-7b25c8de385a?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=30a731a8a77e11d50a408093d8ef6494&auto=format&fit=crop&w=760&q=80');
 }
+
+.formTaskBgImage {
+	background-image: url('https://images.unsplash.com/photo-1539076072462-af09584409d0?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=f8d6850c400a10353ed68acbd2b3d946&auto=format&fit=crop&w=750&q=80');
+}
